@@ -1,14 +1,72 @@
+import java.util.List;
 import java.util.Scanner;
 
 public class StudentApp {
 
 	public static void main(String[] args) {
 		
+		
 		Scanner ip = new Scanner(System.in);
+		StudentRepository repo = new StudentRepository();
+		
+		System.out.println("CURD operations on Student Table");
+		System.out.println("1. Insert the student");
+		System.out.println("2. Retrieve all Students");
+		System.out.println("3. Delete Student By Htno");
+		System.out.println("4. Update Name By Id");
+		System.out.println("Enter your choice");
+		int choice = ip.nextInt();
+		
+		switch(choice) {
+		
+		case 1: 
+			insertStudent(ip,repo);
+			break;
+		case 2:
+			retrieveAllStudents(repo);
+			break;
+		case 3:
+			System.out.println("Enter Htno");
+			int htno = ip.nextInt();
+			boolean status = repo.deleteStudent(htno);
+			if(status)
+				System.out.println(htno + " is deleted");
+			else
+				System.out.println(htno + " is failed to delete");
+			break;
+			
+		case 4:
+			System.out.println("Enter Htno");
+			htno = ip.nextInt();
+			System.out.println("Enter New Name:");
+			String newName = ip.next();
+			
+			status = repo.updateStudentNameById(htno,newName);
+			if(status)
+				System.out.println(htno + " is Updated");
+			else
+				System.out.println(htno + " is failed to update");
+			break;
+
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+
+	}
+	
+	
+	public static void insertStudent(Scanner ip, 
+			StudentRepository repo) {
 		
 		StudentPojo stud = new StudentPojo();
 		
-		StudentRepository repo = new StudentRepository();
+		
 		
 		System.out.println("Enter Htno:");
 		int htno = ip.nextInt();
@@ -31,11 +89,24 @@ public class StudentApp {
 			System.out.println("Record inserted successfully");
 		else
 			System.out.println("Insertio failed....");
-		
-		
-		
-		
-
+	}
+	
+	public static void retrieveAllStudents(StudentRepository repo) {
+		List<StudentPojo> studentList = repo.RetrieveStudent();
+		if(studentList.size()>0) {
+			for(StudentPojo stud : studentList) {
+				
+				System.out.printf("\n %5d%10s%5d%5d%5d%5f%10s",
+						stud.getHtno(),
+						stud.getsName(),
+						stud.getM1(),
+						stud.getM2(),
+						stud.getTotal(),
+						stud.getAverage(),
+						stud.getRes());
+				
+			}
+		}
 	}
 
 }
