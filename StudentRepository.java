@@ -176,13 +176,18 @@ public List<StudentPojo> RetrieveStudent() {
 			
 			
 			
-			if(effectedRows>0)
-				return true;
+			if(effectedRows==0) 
+				throw new InvalidHTNOException(h);
+				
 			
 			
 			
 		} catch (SQLException e) {
 			System.out.println("Failed to Estd. Connection");
+		}
+		catch(InvalidHTNOException e) {
+			System.out.println(e.getMessage());
+			return false;
 		}
 		
 		// Step 6: Closing all the connections in reverse order
@@ -200,7 +205,7 @@ public List<StudentPojo> RetrieveStudent() {
 			}
 		}
 		
-		return false;
+		return true;
 		
 	}
 	
