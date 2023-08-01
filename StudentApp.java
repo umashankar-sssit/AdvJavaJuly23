@@ -14,6 +14,7 @@ public class StudentApp {
 		System.out.println("2. Retrieve all Students");
 		System.out.println("3. Delete Student By Htno");
 		System.out.println("4. Update Name By Id");
+		System.out.println("5. Retrieve Student By Htno");
 		System.out.println("Enter your choice");
 		int choice = ip.nextInt();
 		
@@ -38,6 +39,12 @@ public class StudentApp {
 		case 4:
 			System.out.println("Enter Htno");
 			htno = ip.nextInt();
+			
+			List<StudentPojo> studList = repo.RetrieveStudentById(htno);
+			if(studList.size()==0) {
+				System.out.println("Invalid Htno....");
+			} else {
+			System.out.println("Existed Name is:" + studList.get(0).getsName());
 			System.out.println("Enter New Name:");
 			String newName = ip.next();
 			
@@ -46,18 +53,17 @@ public class StudentApp {
 				System.out.println(htno + " is Updated");
 			else
 				System.out.println(htno + " is failed to update");
+			}
 			break;
-
+			
+		case 5:
+			System.out.println("Enter Htno:");
+			htno = ip.nextInt();
+			
+			List<StudentPojo> studList1 = repo.RetrieveStudentById(htno);
+			displayStudent(studList1);
 			
 		}
-		
-		
-		
-		
-		
-		
-		
-
 	}
 	
 	
@@ -93,8 +99,12 @@ public class StudentApp {
 	
 	public static void retrieveAllStudents(StudentRepository repo) {
 		List<StudentPojo> studentList = repo.RetrieveStudent();
-		if(studentList.size()>0) {
-			for(StudentPojo stud : studentList) {
+		displayStudent(studentList);		
+	}
+	
+	private static void displayStudent(List<StudentPojo> studList) {
+		if(studList.size()>0) {
+			for(StudentPojo stud : studList) {
 				
 				System.out.printf("\n %5d%10s%5d%5d%5d%5f%10s",
 						stud.getHtno(),
