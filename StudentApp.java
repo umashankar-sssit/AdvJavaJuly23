@@ -42,7 +42,7 @@ public class StudentApp {
 			
 			List<StudentPojo> studList = repo.RetrieveStudentById(htno);
 			if(studList.size()==0) {
-				System.out.println("Invalid Htno....");
+				throw new InvalidHTNOException(htno);
 			} else {
 			System.out.println("Existed Name is:" + studList.get(0).getsName());
 			System.out.println("Enter New Name:");
@@ -61,7 +61,11 @@ public class StudentApp {
 			htno = ip.nextInt();
 			
 			List<StudentPojo> studList1 = repo.RetrieveStudentById(htno);
+			if(studList1.size()==0)
+				throw new InvalidHTNOException(htno);			
 			displayStudent(studList1);
+			break;
+			
 			
 		}
 	}
