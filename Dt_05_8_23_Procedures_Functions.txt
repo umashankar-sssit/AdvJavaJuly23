@@ -1,0 +1,124 @@
+What are procedures and functions in PL/SQL?
+these are used to define a task
+
+1. Create a procedure to insert the data into student table
+
+create or replace procedure insertstudent(
+				phtno number,
+				psname varchar2,
+				pm1 number,
+				pm2 number)
+is
+ptotal number(5);
+paverage number(6,2);
+presult varchar2(5);
+
+begin
+ptotal:=pm1+pm2;
+paverage:=ptotal/2;
+
+if pm1>35 AND pm2>35 then
+presult:='pass';
+else
+presult:='fail';
+end if;
+insert into student values(phtno,psname,pm1,pm2,ptotal,paverage,presult);
+dbms_output.put_line('Inserted successfully');
+end;
+/
+
+
+How to execute the above procedure in SQL Client?
+Two Ways:
+1. Using exec
+2. Using call
+
+exec insertstudent(9,'S9',85,86);
+
+call insertstudent(10,'S10',75,76);
+
+
+How to call the above procedure from JDBC Program?
+using Callable statement
+
+
+
+How many types of parameters are available in Procuedures
+
+1. IN Mode --> Reading the value --> By default
+2. Out Mode --> Writes the value
+3. IN OUT Mode --> Reads as well as Write
+
+
+Write a Procedure that accepts HTNO and retreive the student name
+
+
+create or replace procedure getnamebyhtno(
+				phtno number,
+				psname out varchar2)
+is
+begin
+select sname into psname from student where htno=phtno;
+end;
+/
+
+In order to execute the above procedure from SQL Client,
+we have to define an anonymous block
+
+declare
+phtno number(5);
+psname varchar2(10);
+begin
+phtno:=&phtno;
+getnamebyhtno(phtno,psname);
+dbms_output.put_line('Student Name is...' || psname);
+end;
+/
+
+
+
+create or replace procedure updateBy5(num IN OUT number)
+IS
+begin
+num:=num+5;
+end;
+/
+
+
+declare
+num number(5);
+begin
+num:=&num;
+updateBy5(num);
+dbms_output.put_line('Updated Value...' || num);
+end;
+/
+
+
+What is diff. between Procedure and Function?
+
+Procedure --> won't return any value
+Function --> returns some value
+
+
+create or replace function getResultById(phtno number)
+return varchar
+is
+tresult varchar2(10);
+begin
+select res into tresult from student where htno=phtno;
+return tresult;
+end;
+/
+
+
+
+declare
+htno number(10);
+result varchar2(10);
+begin
+htno:=&htno;
+result:=getResultById(htno);
+dbms_output.put_line('Result is'|| result);
+end;
+/
